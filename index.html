@@ -9,7 +9,6 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Montserrat',sans-serif;}
-
 body{background:#0b0b0f;color:white;}
 
 header{
@@ -63,9 +62,13 @@ padding:15px;
 border-radius:12px;
 transition:.3s;
 }
-.card img{width:100%;border-radius:10px;}
-.card h4{margin:10px 0;}
-
+.card img{
+width:100%;
+border-radius:10px;
+height:200px;
+object-fit:cover;
+}
+.card h4{margin:10px 0;font-size:16px;}
 .card button{
 width:100%;
 padding:10px;
@@ -77,7 +80,6 @@ font-weight:600;
 cursor:pointer;
 }
 
-/* Carrito */
 .cart-icon{
 position:fixed;
 bottom:20px;
@@ -117,7 +119,7 @@ z-index:999;
 .cart button{
 width:100%;
 padding:12px;
-margin-top:20px;
+margin-top:10px;
 background:#00df82;
 border:none;
 border-radius:25px;
@@ -165,35 +167,15 @@ background:#0b0b0f;
 <div class="sidebar" id="sidebar">
 <h3>Categorías</h3>
 <ul>
-<li onclick="filterCategory('Celulares')">📱 Celulares</li>
-<li onclick="filterCategory('Computadores')">💻 Computadores</li>
-<li onclick="filterCategory('Accesorios')">🎧 Accesorios</li>
-<li onclick="filterCategory('Gaming')">🎮 Gaming</li>
-<li onclick="filterCategory('Gadgets')">📦 Gadgets</li>
+<li onclick="filterCategory('Tecnología')">📱 Tecnología</li>
+<li onclick="filterCategory('Accesorios')">🎒 Accesorios</li>
+<li onclick="filterCategory('Gafas')">🕶 Gafas</li>
+<li onclick="filterCategory('Hogar')">🏠 Hogar</li>
+<li onclick="filterCategory('Otros')">📦 Otros</li>
 </ul>
 </div>
 
-<div class="products">
-
-<div class="card" data-category="Gaming">
-<img src="https://via.placeholder.com/300">
-<h4>Mouse Gamer RGB</h4>
-<button onclick="addToCart('Mouse Gamer RGB')">Cotizar ahora</button>
-</div>
-
-<div class="card" data-category="Accesorios">
-<img src="https://via.placeholder.com/300">
-<h4>Cargador Tipo C 65W</h4>
-<button onclick="addToCart('Cargador Tipo C 65W')">Cotizar ahora</button>
-</div>
-
-<div class="card" data-category="Gadgets">
-<img src="https://via.placeholder.com/300">
-<h4>Audífonos Bluetooth</h4>
-<button onclick="addToCart('Audífonos Bluetooth')">Cotizar ahora</button>
-</div>
-
-</div>
+<div class="products" id="products-container"></div>
 
 <!-- Cómo funciona -->
 <div style="padding:25px; background:#1a1a24;">
@@ -201,17 +183,17 @@ background:#0b0b0f;
 
 <div style="margin-bottom:15px;">
 <strong>1️⃣ Solicita lo que necesitas</strong>
-<p>Busca o cotiza cualquier producto tecnológico.</p>
+<p>Busca o cotiza cualquier producto.</p>
 </div>
 
 <div style="margin-bottom:15px;">
 <strong>2️⃣ Nosotros lo conseguimos</strong>
-<p>Comparamos, verificamos calidad y conseguimos el mejor precio.</p>
+<p>Comparamos proveedores y garantizamos calidad.</p>
 </div>
 
 <div style="margin-bottom:15px;">
-<strong>3️⃣ Entrega rápida en Bogotá</strong>
-<p>Recíbelo en tu ubicación por bicicleta o moto.</p>
+<strong>3️⃣ Entrega rápida</strong>
+<p>Recíbelo donde lo necesites.</p>
 </div>
 </div>
 
@@ -231,7 +213,7 @@ background:#0b0b0f;
 <h2>Tu Cotización</h2>
 <div id="cart-items"></div>
 <button onclick="sendWhatsApp()">Enviar por WhatsApp</button>
-<button onclick="clearCart()" style="background:#ff4d4d;margin-top:10px;">Vaciar carrito</button>
+<button onclick="clearCart()" style="background:#ff4d4d;">Vaciar carrito</button>
 </div>
 
 <footer>
@@ -240,6 +222,50 @@ background:#0b0b0f;
 
 <script>
 let cart=[];
+
+const products = [
+{ name:"TV Box Watch Onn 4K", category:"Tecnología", img:"img/watch-onn-4k.jpg" },
+{ name:"Fire TV Stick 4K Amazon", category:"Tecnología", img:"img/fire-tv-4k.jpg" },
+{ name:"Airpods 4", category:"Tecnología", img:"img/airpods4.jpg" },
+{ name:"Galaxy Buds 2 Pro", category:"Tecnología", img:"img/budspro2.jpg" },
+{ name:"Audífonos conducción ósea", category:"Tecnología", img:"img/audifonososeos.jpg" },
+{ name:"Cargador Samsung 25W", category:"Tecnología", img:"img/samsung25w.jpg" },
+{ name:"Cargador Samsung 45W", category:"Tecnología", img:"img/samsung45w.jpg" },
+{ name:"Cargador iPhone 20W", category:"Tecnología", img:"img/cargadoriphone20w.jpg" },
+{ name:"Glucómetro", category:"Tecnología", img:"img/glucometro.jpg" },
+
+{ name:"Forro celular", category:"Accesorios", img:"img/forros-cel.jpg" },
+{ name:"Case Airpods", category:"Accesorios", img:"img/caseairpods.jpg" },
+{ name:"Riñonera moto", category:"Accesorios", img:"img/rinonera.jpg" },
+{ name:"Pasamontañas", category:"Accesorios", img:"img/pasamontanas.jpg" },
+{ name:"Maleta moto", category:"Accesorios", img:"img/maletamoto.jpg" },
+{ name:"Cantimplora", category:"Accesorios", img:"img/cantimplora.jpg" },
+
+{ name:"Gafas deportivas", category:"Gafas", img:"img/gafas.jpg" },
+
+{ name:"Bombillo LED sensor", category:"Hogar", img:"img/bombillo.jpg" },
+{ name:"Sensor techo", category:"Hogar", img:"img/sensortecho.jpg" },
+{ name:"Cerámicas pintar", category:"Hogar", img:"img/ceramica.jpg" },
+
+{ name:"Pocillos medievales", category:"Otros", img:"img/posillos.jpg" },
+{ name:"Cables iniciación", category:"Otros", img:"img/cable.jpg" },
+{ name:"Linterna", category:"Otros", img:"img/linterna.jpg" },
+{ name:"Taser", category:"Otros", img:"img/taser.jpg" },
+{ name:"Luces bicicleta", category:"Otros", img:"img/lucesbicicleta.jpg" }
+];
+
+function renderProducts(list){
+const container=document.getElementById("products-container");
+container.innerHTML="";
+list.forEach(product=>{
+container.innerHTML+=`
+<div class="card">
+<img src="${product.img}" alt="${product.name}">
+<h4>${product.name}</h4>
+<button onclick="addToCart('${product.name}')">Cotizar ahora</button>
+</div>`;
+});
+}
 
 function toggleMenu(){document.getElementById("sidebar").classList.toggle("active");}
 function toggleCart(){document.getElementById("cart").classList.toggle("active");}
@@ -264,7 +290,6 @@ ${item}
 });
 
 count.innerText=cart.length;
-
 cartIcon.classList.add("animate");
 setTimeout(()=>{cartIcon.classList.remove("animate");},300);
 }
@@ -287,29 +312,24 @@ window.open("https://wa.me/573059414981?text="+encodeURIComponent(message));
 
 function searchProduct(){
 let input=document.getElementById("searchInput").value.toLowerCase();
-let cards=document.querySelectorAll(".card");
-cards.forEach(card=>{
-let text=card.innerText.toLowerCase();
-card.style.display=text.includes(input)?"block":"none";
-});
+let filtered = products.filter(p => p.name.toLowerCase().includes(input));
+renderProducts(filtered);
 }
 
 function filterCategory(category){
-let cards=document.querySelectorAll(".card");
-cards.forEach(card=>{
-card.style.display=card.dataset.category===category?"block":"none";
-});
+let filtered = products.filter(p => p.category === category);
+renderProducts(filtered);
 document.getElementById("sidebar").classList.remove("active");
 }
 
 function goHome(){
-let cards=document.querySelectorAll(".card");
-cards.forEach(card=>{card.style.display="block";});
+renderProducts(products);
 }
+
+renderProducts(products);
 </script>
 
 <!-- Tawk Chat -->
-<!--Start of Tawk.to Script-->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
@@ -321,6 +341,6 @@ s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
-<!--End of Tawk.to Script-->
+
 </body>
 </html>
